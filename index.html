@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Backend Foundation</title>
+    <meta name="description" content="Eight weeks of backend interview prep: read each section, then drill its questions until you can answer cold." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#FCFCFB" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1B1B1D" media="(prefers-color-scheme: dark)" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Foundation" />
+    <meta property="og:title" content="Backend Foundation" />
+    <meta property="og:description" content="Read each section, then drill its questions until you can answer cold." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="stylesheet" href="./src/styles/index.css" />
+    <script>
+      // Apply the saved theme, reading font and view before first paint (no flash).
+      try {
+        var s = JSON.parse(localStorage.getItem('bf:settings') || '{}');
+        if (s.theme === 'light' || s.theme === 'dark') document.documentElement.dataset.theme = s.theme;
+        if (s.view === 'practice') document.documentElement.dataset.view = 'practice';
+        if (s.width === 'full') document.documentElement.style.setProperty('--prose-width', '100%');
+        else if (typeof s.width === 'number') document.documentElement.style.setProperty('--prose-width', Math.round(s.width) + 'px');
+        if ((s.week && s.week !== 1) || s.qfirst === false) document.documentElement.classList.add('prerender-stale');
+      } catch (e) {}
+    </script>
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <a class="brand" href="./" aria-label="Backend Foundation home">
+          <svg class="brand-mark" viewBox="0 0 20 20" aria-hidden="true">
+            <rect x="1.5" y="1.5" width="17" height="17" rx="4.5" />
+            <path d="M5.5 14h9M7 11h6M8.5 8h3" />
+          </svg>
+          <span class="brand-name">Backend Foundation</span>
+        </a>
+
+        <div class="title-wrap">
+          <button id="week-btn" class="week-title" aria-haspopup="menu" aria-expanded="false" aria-controls="week-menu">
+            <span class="wt-num" id="week-num">Week 1</span>
+            <span class="wt-theme" id="week-theme">Go core from the real repo + network essentials</span>
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4.5 6.5 8 10l3.5-3.5" /></svg>
+          </button>
+        </div>
+
+        <div class="actions">
+          <div class="segmented" role="group" aria-label="View">
+            <button class="seg" data-view-btn="read" aria-label="Read" data-tip="Read  ⌥1">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 4.2C6.6 3.2 4.6 2.8 2 3v9.3c2.6-.2 4.6.2 6 1.2 1.4-1 3.4-1.4 6-1.2V3c-2.6-.2-4.6.2-6 1.2zM8 4.2v9.3" /></svg>
+            </button>
+            <button class="seg" data-view-btn="practice" aria-label="Practice" data-tip="Practice  ⌥2">
+              <svg viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2.5" width="9" height="11" rx="1.8" /><path d="M6 6.2h4M6 8.6h2.6" /></svg>
+            </button>
+          </div>
+
+          <button id="theme-btn" class="icon-btn" aria-label="Theme" data-tip="Theme">
+            <svg class="i-light" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="2.8" /><path d="M8 1.5v1.3M8 13.2v1.3M1.5 8h1.3M13.2 8h1.3M3.4 3.4l.9.9M11.7 11.7l.9.9M3.4 12.6l.9-.9M11.7 4.3l.9-.9" /></svg>
+            <svg class="i-dark" viewBox="0 0 16 16" aria-hidden="true"><path d="M13.4 9.6A5.6 5.6 0 0 1 6.4 2.6a5.6 5.6 0 1 0 7 7z" /></svg>
+          </button>
+
+          <button id="menu-btn" class="icon-btn" aria-label="More" aria-haspopup="menu" aria-expanded="false" data-tip="More">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="3.5" cy="8" r=".6" /><circle cx="8" cy="8" r=".6" /><circle cx="12.5" cy="8" r=".6" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="workspace" id="workspace">
+        <section class="pane pane-read" aria-label="Read">
+          <div class="read-scroll" id="read-scroll">
+            <article id="read" class="prose"></article>
+          </div>
+          <div class="page-handle" data-side="left" role="separator" aria-orientation="vertical" aria-label="Page width" tabindex="0" data-tip="Drag to resize · double-click to reset"></div>
+          <div class="page-handle" data-side="right" role="separator" aria-orientation="vertical" aria-label="Page width" tabindex="0" data-tip="Drag to resize · double-click to reset"></div>
+          <nav id="toc" class="toc" aria-label="Outline">
+            <div class="toc-rail" aria-hidden="true"></div>
+            <div class="toc-panel">
+              <p class="toc-label">On this page</p>
+              <ol class="toc-list"></ol>
+            </div>
+          </nav>
+        </section>
+
+        <section class="pane pane-practice" aria-label="Practice">
+          <div class="practice-scroll" id="practice-scroll">
+            <div class="practice">
+              <div class="p-bar">
+                <div class="segmented seg-text" role="group" aria-label="Deck">
+                  <button class="seg" data-mode="all" aria-pressed="true">Shuffle all</button>
+                  <button class="seg" data-mode="part" aria-pressed="false">Pick parts</button>
+                </div>
+                <span class="p-note" id="mode-note"></span>
+              </div>
+
+              <div class="picker" id="picker" hidden>
+                <div class="picker-head">
+                  <span class="picker-label">Week</span>
+                  <div class="week-dots" id="pick-weeks" role="group" aria-label="Week to pick from"></div>
+                </div>
+                <div id="parts" class="picker-groups"></div>
+                <div class="picker-foot">
+                  <div class="segmented seg-text" role="group" aria-label="Card order">
+                    <button class="seg" data-seq="shuffle" aria-pressed="true">Shuffled</button>
+                    <button class="seg" data-seq="kit" aria-pressed="false">Reading order</button>
+                  </div>
+                  <button class="text-btn" id="pick-clear">Clear</button>
+                  <button class="primary-btn" id="pick-start" disabled>Pick a part</button>
+                </div>
+              </div>
+
+              <div class="meter">
+                <div class="meter-row"><span id="pass-label">Pass 1</span><span class="tally"><span class="c" id="t-cold">0 cold</span><span class="m" id="t-missed">0 missed</span></span></div>
+                <div class="meter-bar" aria-hidden="true"><i class="c" id="b-cold"></i><i class="m" id="b-missed"></i></div>
+              </div>
+
+              <div id="stage" aria-live="polite"></div>
+
+              <p class="p-keys hide-sm"><kbd>Space</kbd> flip <span class="sep">·</span> <kbd>1</kbd> missed <span class="sep">·</span> <kbd>2</kbd> cold <span class="sep">·</span> <kbd>R</kbd> reread <span class="sep">·</span> <kbd>U</kbd> undo</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="statusbar">
+        <div class="status-left">
+          <span id="stat-week">Week 1</span>
+          <span class="sep" aria-hidden="true">·</span>
+          <span id="stat-cold">0 of 42 cold</span>
+          <span class="sep hide-sm" aria-hidden="true">·</span>
+          <span id="stat-missed" class="hide-sm">0 missed</span>
+        </div>
+        <div class="status-right">
+          <span id="stat-pass" class="hide-sm">Pass 1</span>
+          <span class="sep hide-sm" aria-hidden="true">·</span>
+          <span id="stat-saved" class="saved">Saved on this device</span>
+        </div>
+      </footer>
+    </div>
+
+    <div id="week-menu" class="menu week-menu" role="menu" aria-label="Weeks" hidden></div>
+
+    <div id="menu" class="menu" role="menu" aria-label="More actions" hidden>
+      <button role="menuitem" data-action="palette">Command menu<kbd>⌘K</kbd></button>
+      <div class="menu-sep" role="separator"></div>
+      <button role="menuitem" data-action="practice-week">Practice this week</button>
+      <button role="menuitem" data-action="practice-notebook">Practice the notebook</button>
+      <button role="menuitem" data-action="close-all">Close all questions</button>
+      <div class="menu-sep" role="separator"></div>
+      <button role="menuitem" data-action="export">Export progress…</button>
+      <button role="menuitem" data-action="import">Import progress…</button>
+      <div class="menu-sep" role="separator"></div>
+      <button role="menuitemcheckbox" data-action="toggle-outline" aria-checked="true">Outline</button>
+      <button role="menuitemcheckbox" data-action="toggle-qfirst" aria-checked="true">Questions first</button>
+      <button role="menuitemcheckbox" data-action="toggle-serif" aria-checked="false">Serif reading</button>
+      <button role="menuitemcheckbox" data-action="toggle-system" aria-checked="true">Match system theme</button>
+    </div>
+
+    <div id="palette" class="palette" hidden>
+      <div class="palette-box" role="dialog" aria-modal="true" aria-label="Command menu">
+        <div class="palette-field">
+          <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="4.6" /><path d="M10.4 10.4l3.2 3.2" /></svg>
+          <input
+            id="palette-input"
+            type="text"
+            placeholder="Jump to a section or question, or type a command…"
+            autocomplete="off"
+            spellcheck="false"
+            role="combobox"
+            aria-expanded="true"
+            aria-controls="palette-list"
+            aria-autocomplete="list"
+          />
+          <kbd>esc</kbd>
+        </div>
+        <ul id="palette-list" class="palette-list" role="listbox" aria-label="Commands"></ul>
+        <p class="palette-empty" hidden>No matches</p>
+      </div>
+    </div>
+
+    <aside id="sheet" class="sheet" aria-labelledby="sheet-title" aria-modal="true" role="dialog" hidden>
+      <div class="sheet-scrim" data-close></div>
+      <div class="sheet-panel">
+        <header class="sheet-head">
+          <div><p class="sheet-eyebrow" id="sheet-eyebrow"></p><h2 id="sheet-title"></h2></div>
+          <button class="icon-btn" data-close aria-label="Back to the card" data-tip="Back to the card  esc">
+            <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M4 4l8 8M12 4l-8 8" /></svg>
+          </button>
+        </header>
+        <div class="sheet-scroll"><article id="sheet-body" class="prose"></article></div>
+        <footer class="sheet-foot">
+          <button class="primary-btn" data-close>Back to the card</button>
+          <button class="text-btn" id="sheet-open">Open in Read</button>
+        </footer>
+      </div>
+    </aside>
+
+    <div id="confirm" class="confirm" role="alertdialog" aria-modal="true" aria-labelledby="confirm-title" aria-describedby="confirm-body" hidden>
+      <div class="confirm-box">
+        <h2 id="confirm-title"></h2>
+        <p id="confirm-body"></p>
+        <div class="confirm-actions">
+          <button class="text-btn" id="confirm-cancel">Keep going</button>
+          <button class="danger-btn" id="confirm-ok">OK</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="toasts" class="toasts" aria-live="polite"></div>
+    <input id="file-input" type="file" accept=".json,application/json" hidden />
+
+    <script type="module" src="./src/main.ts"></script>
+  </body>
+</html>
